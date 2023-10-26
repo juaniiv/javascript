@@ -8,11 +8,11 @@ function autenticarUsuario() {
     usuario = prompt("Ingrese el usuario");
   }
 
-  let contrasena = prompt("Ingrese su contraseña");
+  let password = prompt("Ingrese su contraseña");
 
-  while (contrasena !== "contraseña1") {
+  while (password !== "contraseña1") {
     alert("Contraseña incorrecta");
-    contrasena = prompt("Ingrese la contraseña");
+    password = prompt("Ingrese la contraseña");
   }
 
   alert("¡Bienvenido!");

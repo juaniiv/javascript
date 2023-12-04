@@ -1,34 +1,44 @@
-// Array para almacenar usuarios
-let usuarios = [];
+let usuarios = obtenerUsuarios();
+
+function obtenerUsuarios() {
+    const usuariosGuardados = localStorage.getItem("usuarios");
+    return usuariosGuardados ? JSON.parse(usuariosGuardados) : [];
+}
 
 function validarInicioSesion(event) {
     event.preventDefault();
 
-    const emailInput = document.getElementById("exampleInputEmail1");
-    const passwordInput = document.getElementById("exampleInputPassword1");
+    
+    const email = $("#exampleInputEmail1").val();
+    const contrasena = $("#exampleInputPassword1").val();
 
-    const email = emailInput.value;
-    const contrasena = passwordInput.value;
+    
+    const usuarioEncontrado = usuarios.find(user => user.email === email && user.contrasena === contrasena);
 
-    const emailEsperado = "usuario@example.com";
-    const contraseñaEsperada = "contraseña123";
+    if (usuarioEncontrado) {
+       
+        $("#exampleInputEmail1").val("");
+        $("#exampleInputPassword1").val("");
 
-    if (email === emailEsperado && contrasena === contraseñaEsperada) {
+       
+        console.log(`Inicio de sesión exitoso. Bienvenido, ${usuarioEncontrado.nombre} (${usuarioEncontrado.email}).`);
+
+       
         window.location.href = "inicio-sesion.html";
     } else {
-        alert("Inicio de sesión fallido. Verifica tu email y contraseña.");
+        
+        console.error("Inicio de sesión fallido. Verifica tu email y contraseña.");
     }
 }
 
-const botonIniciarSesion = document.querySelector("button.btn-primary");
-botonIniciarSesion.addEventListener("click", validarInicioSesion);
+const botonIniciarSesion = $("button.btn-primary");
+botonIniciarSesion.on("click", validarInicioSesion);
 
 function mostrarFormularioRegistro() {
-    const formularioInicioSesion = document.querySelector(".formulario form");
-    formularioInicioSesion.style.display = "none";
+    const formularioInicioSesion = $(".formulario form");
+    formularioInicioSesion.css("display", "none");
 
-    const formularioRegistro = document.createElement("form");
-    formularioRegistro.innerHTML = `
+    const formularioRegistro = $("<form>").html(`
         <h1>Registro</h1>
         <div class="mb-3">
             <label for="nombreRegistro" class="form-label">Nombre</label>
@@ -47,48 +57,64 @@ function mostrarFormularioRegistro() {
             <input type="password" class="form-control" id="contrasenaRegistro" placeholder="Ingrese su contraseña">
         </div>
         <button type="submit" class="btn btn-primary">Registrarse</button>
-    `;
+    `);
 
-    const formularioContainer = document.querySelector(".formulario");
-    formularioContainer.appendChild(formularioRegistro);
+    const formularioContainer = $(".formulario");
+    formularioContainer.append(formularioRegistro);
 
-    const botonRegistrarse = formularioRegistro.querySelector("button.btn-primary");
-    botonRegistrarse.addEventListener("click", guardarUsuarioRegistro);
+    const botonRegistrarse = formularioRegistro.find("button.btn-primary");
+    botonRegistrarse.on("click", guardarUsuarioRegistro);
 }
 
-const enlaceRegistro = document.querySelector("a[href='#']");
-enlaceRegistro.addEventListener("click", mostrarFormularioRegistro);
+const enlaceRegistro = $("a[href='#']");
+enlaceRegistro.on("click", mostrarFormularioRegistro);
 
 function guardarUsuarioRegistro(event) {
     event.preventDefault();
 
-    const nombreInput = document.getElementById("nombreRegistro");
-    const edadInput = document.getElementById("edadRegistro");
-    const emailInput = document.getElementById("emailRegistro");
-    const contrasenaInput = document.getElementById("contrasenaRegistro");
-
-    const nombre = nombreInput.value;
-    const edad = edadInput.value;
-    const email = emailInput.value;
-    const contrasena = contrasenaInput.value;
+    
+    const nombre = $("#nombreRegistro").val();
+    const edad = $("#edadRegistro").val();
+    const email = $("#emailRegistro").val();
+    const contrasena = $("#contrasenaRegistro").val();
 
     if (!nombre || !email || !edad || !contrasena) {
-        alert("Por favor, complete todos los campos.");
+        
+        console.error("Por favor, complete todos los campos.");
         return;
     }
 
     const nuevoUsuario = { nombre, edad, email, contrasena };
 
-    // Agregar el nuevo usuario al array
+    
     usuarios.push(nuevoUsuario);
 
+    
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
-    nombreInput.value = "";
-    edadInput.value = "";
-    emailInput.value = "";
-    contrasenaInput.value = "";
+    
+    $("#nombreRegistro").val("");
+    $("#edadRegistro").val("");
+    $("#emailRegistro").val("");
+    $("#contrasenaRegistro").val("");
 
-    console.log("Usuario registrado:", nuevoUsuario);
+    
+    console.log("Usuario registrado con éxito.", nuevoUsuario);
     console.log("Usuarios actuales:", usuarios);
 }
+
+
+function obtenerYMostrarUsuarios() {
+    fetch('https://jsonplaceholder.typicode.com/users')
+        .then(response => response.json())
+        .then(usuarios => {
+           
+            console.log('Lista de usuarios:', usuarios);
+
+            
+        })
+        .catch(error => console.error('Error al obtener usuarios:', error));
+}
+
+obtenerYMostrarUsuarios();
+

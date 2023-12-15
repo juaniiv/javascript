@@ -1,3 +1,4 @@
+// Array para almacenar usuarios
 let usuarios = obtenerUsuarios();
 
 function obtenerUsuarios() {
@@ -8,25 +9,19 @@ function obtenerUsuarios() {
 function validarInicioSesion(event) {
     event.preventDefault();
 
-    
     const email = $("#exampleInputEmail1").val();
     const contrasena = $("#exampleInputPassword1").val();
 
-    
     const usuarioEncontrado = usuarios.find(user => user.email === email && user.contrasena === contrasena);
 
     if (usuarioEncontrado) {
-       
         $("#exampleInputEmail1").val("");
         $("#exampleInputPassword1").val("");
 
-       
         console.log(`Inicio de sesión exitoso. Bienvenido, ${usuarioEncontrado.nombre} (${usuarioEncontrado.email}).`);
 
-       
         window.location.href = "inicio-sesion.html";
     } else {
-        
         console.error("Inicio de sesión fallido. Verifica tu email y contraseña.");
     }
 }
@@ -72,49 +67,37 @@ enlaceRegistro.on("click", mostrarFormularioRegistro);
 function guardarUsuarioRegistro(event) {
     event.preventDefault();
 
-    
     const nombre = $("#nombreRegistro").val();
     const edad = $("#edadRegistro").val();
     const email = $("#emailRegistro").val();
     const contrasena = $("#contrasenaRegistro").val();
 
     if (!nombre || !email || !edad || !contrasena) {
-        
         console.error("Por favor, complete todos los campos.");
         return;
     }
 
     const nuevoUsuario = { nombre, edad, email, contrasena };
 
-    
     usuarios.push(nuevoUsuario);
 
-    
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
-    
     $("#nombreRegistro").val("");
     $("#edadRegistro").val("");
     $("#emailRegistro").val("");
     $("#contrasenaRegistro").val("");
 
-    
     console.log("Usuario registrado con éxito.", nuevoUsuario);
     console.log("Usuarios actuales:", usuarios);
+
+    // Redirección a la página de inicio de sesión después del registro
+    window.location.href = "inicio-sesion.html";
 }
 
-
 function obtenerYMostrarUsuarios() {
-    fetch('https://jsonplaceholder.typicode.com/users')
-        .then(response => response.json())
-        .then(usuarios => {
-           
-            console.log('Lista de usuarios:', usuarios);
-
-            
-        })
-        .catch(error => console.error('Error al obtener usuarios:', error));
+    // Mostrar solo los usuarios locales en la consola
+    console.log('Usuarios locales registrados:', usuarios);
 }
 
 obtenerYMostrarUsuarios();
-

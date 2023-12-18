@@ -1,4 +1,3 @@
-// Array para almacenar usuarios
 let usuarios = obtenerUsuarios();
 
 function obtenerUsuarios() {
@@ -20,6 +19,7 @@ function validarInicioSesion(event) {
 
         console.log(`Inicio de sesión exitoso. Bienvenido, ${usuarioEncontrado.nombre} (${usuarioEncontrado.email}).`);
 
+        // Redirigir a la página de inicio de sesión exitoso
         window.location.href = "inicio-sesion.html";
     } else {
         console.error("Inicio de sesión fallido. Verifica tu email y contraseña.");
@@ -91,12 +91,11 @@ function guardarUsuarioRegistro(event) {
     console.log("Usuario registrado con éxito.", nuevoUsuario);
     console.log("Usuarios actuales:", usuarios);
 
-    // Redirección a la página de inicio de sesión después del registro
-    window.location.href = "inicio-sesion.html";
+    // Redirigir a la página de registro exitoso
+    window.location.href = "registro.html";
 }
 
 function obtenerYMostrarUsuarios() {
-    // Mostrar solo los usuarios locales en la consola
     console.log('Usuarios locales registrados:', usuarios);
 }
 
